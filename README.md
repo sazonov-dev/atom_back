@@ -24,3 +24,5 @@
     # on Windows using Scoop (https://scoop.sh/)
     scoop install ffmpeg
 3. Запустить сервер, python3 main.py / python main.py
+
+Ссылка на фронт - https://github.com/sazonov-dev/atomic
