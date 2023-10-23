@@ -1,4 +1,5 @@
 import os
+import signal
 
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
@@ -20,6 +21,17 @@ def allowed_file(filename):
 
 def allowed_audio_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_AUDIO_EXTENSIONS
+
+
+@app.before_request
+def before_request():
+    timeout = 600  # 600 секунд (10 минут)
+    if request.endpoint != 'static':
+        # Если запрос обрабатывается не статическим файлом, устанавливаем максимальное время ожидания
+        def timeout_handler(signum, frame):
+            raise Exception('Request timed out')
+        signal.signal(signal.SIGALRM, timeout_handler)
+        signal.alarm(timeout)
 
 @app.route('/test', methods=['GET'])
 def test():
